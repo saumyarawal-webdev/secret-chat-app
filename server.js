@@ -1,4 +1,6 @@
+import 'dotenv/config'
 import express from 'express'
+import connectDB from './api/lib/connect.js'
 import apiRoutes from './api/routes.js'
 import { setupFrontend } from './vite-setup.js' // Import the magic
 
@@ -9,7 +11,8 @@ async function startServer() {
   
   // --- 1. USER CONFIGURATION SECTION ---
   // (You can safely edit this part!)
-  
+  // Connect to Database
+  await connectDB()
   app.use(express.json()) // JSON Parser
   
   // Mount your API routes BEFORE the frontend
