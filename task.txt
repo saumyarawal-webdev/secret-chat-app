@@ -1,3 +1,5 @@
 next task :
 
-update chatcontroller to block self-join
+join room frontend
+socket client
+chat ui

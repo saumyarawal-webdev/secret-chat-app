@@ -8,7 +8,7 @@ const generateCode = () => {
 
 export const createRoom = async (req, res) => {
   try {
-    const userId = req.user.id;
+    const userId = req.user._id;
 
     // 1. Check if user already has an active/waiting room
     const existingRoom = await ChatRoom.findOne({ 
@@ -44,7 +44,7 @@ export const createRoom = async (req, res) => {
 export const joinRoom = async (req, res) => {
   try {
     const { code } = req.body;
-    const userId = req.user.id;
+    const userId = req.user._id;
 
     // 1. Find the room
     const room = await ChatRoom.findOne({ code: code.toUpperCase() });
@@ -72,12 +72,34 @@ export const joinRoom = async (req, res) => {
   }
 };
 
+export const getMyRooms = async (req, res) => {
+  try {
+    const userId = req.user._id;
+
+    // Find rooms where the user is the creator OR the partner
+    // We sort by 'updatedAt' so the most recent operation is at the top
+    const rooms = await ChatRoom.find({
+      $or: [
+        { creator: userId }
+      ]
+    })
+    .sort({ updatedAt: -1 })
+    .populate("creator", "username email") // Optional: to show who created it
+    .populate("partner", "username email");
+
+    res.status(200).json(rooms);
+  } catch (error) {
+    console.error("❌ Fetch Rooms Error:", error.message);
+    res.status(500).json({ message: "Failed to retrieve secure channels" });
+  }
+};
+
 export const deleteRoom = async (req, res) => {
   try {
-    const userId = req.user.id;
+    const userId = req.user._id;
     const { roomId } = req.params; // We will pass the DB _id in the URL
 
-   const room = await ChatRoom.findOne({ code: roomId.toUpperCase() });
+   const room = await ChatRoom.findById(roomId);
 
     if (!room) {
       return res.status(404).json({ message: 'Room not found.' });

@@ -1,18 +1,33 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { useUser } from '../hooks/useUser';
 import { LogOut, Plus, Users, Shield } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 
+// Logic & Components
+import { useCreateRoom } from '../hooks/useCreateRoom';
+import { useMyRooms } from '../hooks/useMyRooms'; 
+import CreateRoomModal from '../components/CreateRoomModal';
+import JoinRoomModal from '../components/JoinRoomModal';
+import RoomCard from '../components/RoomCard';
+
 const Dashboard = () => {
   const { data: user, isLoading, isError } = useUser();
   const navigate = useNavigate();
+
+  // --- LOGIC START ---
+  const [showCreate, setShowCreate] = useState(false);
+  const [showJoin, setShowJoin] = useState(false);
+  
+  const { mutate: createRoom, data: newRoom, isPending: isCreating } = useCreateRoom();
+  const { data: rooms, isLoading: roomsLoading } = useMyRooms(); 
+  // --- LOGIC END ---
 
   const handleLogout = () => {
     localStorage.removeItem('token');
     navigate('/login');
   };
 
-  if (isLoading) {
+  if (isLoading || roomsLoading) {
     return (
       <div className="h-screen flex items-center justify-center text-primary">
         <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-primary"></div>
@@ -52,7 +67,7 @@ const Dashboard = () => {
         </div>
       </header>
 
-      {/* 2. Content Section (Overlapping Header) */}
+      {/* 2. Content Section */}
       <div className="px-6 -mt-12 relative z-20 space-y-6">
         
         {/* Status Card */}
@@ -69,32 +84,60 @@ const Dashboard = () => {
           </div>
         </div>
 
-        {/* Action Buttons */}
-        <div className="grid grid-cols-2 gap-4">
-          <button className="bg-white p-6 rounded-2xl shadow-md border border-slate-100 hover:border-primary/50 transition-all group flex flex-col items-center gap-3 active:scale-95">
-            <div className="bg-blue-50 p-4 rounded-full group-hover:bg-primary group-hover:text-white transition-colors text-primary">
-              <Plus size={28} />
-            </div>
-            <span className="font-bold text-slate-700">New Room</span>
-          </button>
+        {/* Action Buttons - HIDDEN IF ROOM EXISTS */}
+        {rooms?.length === 0 && (
+          <div className="grid grid-cols-2 gap-4 animate-in fade-in zoom-in duration-300">
+            <button 
+              onClick={() => { createRoom(); setShowCreate(true); }}
+              disabled={isCreating}
+              className="bg-white p-6 rounded-2xl shadow-md border border-slate-100 hover:border-primary/50 transition-all group flex flex-col items-center gap-3 active:scale-95 disabled:opacity-50"
+            >
+              <div className="bg-blue-50 p-4 rounded-full group-hover:bg-primary group-hover:text-white transition-colors text-primary">
+                <Plus size={28} className={isCreating ? "animate-spin" : ""} />
+              </div>
+              <span className="font-bold text-slate-700">New Room</span>
+            </button>
 
-          <button className="bg-white p-6 rounded-2xl shadow-md border border-slate-100 hover:border-secondary/50 transition-all group flex flex-col items-center gap-3 active:scale-95">
-            <div className="bg-pink-50 p-4 rounded-full group-hover:bg-secondary group-hover:text-white transition-colors text-secondary">
-              <Users size={28} />
-            </div>
-            <span className="font-bold text-slate-700">Join Room</span>
-          </button>
-        </div>
+            <button 
+              onClick={() => setShowJoin(true)}
+              className="bg-white p-6 rounded-2xl shadow-md border border-slate-100 hover:border-secondary/50 transition-all group flex flex-col items-center gap-3 active:scale-95"
+            >
+              <div className="bg-pink-50 p-4 rounded-full group-hover:bg-secondary group-hover:text-white transition-colors text-secondary">
+                <Users size={28} />
+              </div>
+              <span className="font-bold text-slate-700">Join Room</span>
+            </button>
+          </div>
+        )}
 
-        {/* Recent History (Placeholder) */}
+        {/* Updated Operations Section */}
         <div>
           <h3 className="text-lg font-bold text-slate-800 mb-3 ml-1">Recent Operations</h3>
-          <div className="bg-white rounded-2xl shadow-sm border border-slate-100 p-8 text-center">
-            <p className="text-slate-400 text-sm">No recent secure channels found.</p>
-          </div>
+          {rooms && rooms.length > 0 ? (
+             <div className="space-y-3">
+               {rooms.map((room) => (
+                 <RoomCard key={room._id} room={room} />
+               ))}
+             </div>
+          ) : (
+            <div className="bg-white rounded-2xl shadow-sm border border-slate-100 p-8 text-center">
+              <p className="text-slate-400 text-sm">No recent secure channels found.</p>
+            </div>
+          )}
         </div>
-
       </div>
+
+      {/* --- MODALS --- */}
+      {showCreate && (
+        <CreateRoomModal 
+          room={newRoom} 
+          isLoading={isCreating} 
+          onClose={() => setShowCreate(false)} 
+        />
+      )}
+      {showJoin && (
+        <JoinRoomModal onClose={() => setShowJoin(false)} />
+      )}
     </div>
   );
 };
