@@ -77,7 +77,7 @@ export const deleteRoom = async (req, res) => {
     const userId = req.user.id;
     const { roomId } = req.params; // We will pass the DB _id in the URL
 
-    const room = await ChatRoom.findById(roomId);
+   const room = await ChatRoom.findOne({ code: roomId.toUpperCase() });
 
     if (!room) {
       return res.status(404).json({ message: 'Room not found.' });
