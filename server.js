@@ -4,8 +4,28 @@ import connectDB from './api/lib/connect.js'
 import apiRoutes from './api/routes.js'
 import { setupFrontend } from './vite-setup.js' // Import the magic
 
+// socket imports
+import { createServer } from 'http'; 
+import { Server } from 'socket.io'; 
+import { initializeSocket } from './socket.js';
 const app = express()
 const PORT = process.env.PORT || 5173
+
+// --- SOCKET SETUP ---
+// 1. Create HTTP server wrapper
+const httpServer = createServer(app);
+
+// 2. Initialize IO with CORS
+const io = new Server(httpServer, {
+  cors: {
+    origin: "http://localhost:5173", // Your React URL
+    methods: ["GET", "POST"]
+  }
+});
+
+// 3. Inject IO into our Logic Handler
+initializeSocket(io); 
+// --------------------
 
 async function startServer() {
   
@@ -27,10 +47,12 @@ async function startServer() {
 
 
   // --- 3. START SERVER ---
-  app.listen(PORT, () => {
+  httpServer.listen(PORT, () => {
     console.log(`Server running at http://localhost:${PORT}`)
   })
 }
 
 startServer()
+
+
 export default app

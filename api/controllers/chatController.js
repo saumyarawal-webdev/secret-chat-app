@@ -54,11 +54,11 @@ export const joinRoom = async (req, res) => {
     }
 
     if (room.status === 'active') {
-      return res.status(400).json({ message: 'This chat is already full.' });
+      return res.status(400).json({ message: 'This chat room is already full.' });
     }
 
     if (room.creator.toString() === userId) {
-      return res.status(400).json({ message: 'You cannot join your own secret code.' });
+      return res.status(400).json({ message: 'You cannot join your own secret room. Send the code to a friend!' });
     }
 
     // 2. Update room to active
