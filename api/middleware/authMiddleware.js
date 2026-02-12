@@ -14,7 +14,7 @@ const protect = async (req, res, next) => {
       const decoded = jwt.verify(token, process.env.JWT_SECRET);
 
       // Attach only the ID to the request object
-      req.user = { id: decoded.id };
+      req.user = { _id: decoded.id };
 
       next();
     } catch (error) {

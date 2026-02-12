@@ -1,1 +1,32 @@
 @import "tailwindcss";
+
+@theme {
+  /* Your Custom Palette */
+  --color-primary: #00798c;
+  --color-primary-hover: #005a69; /* Darkened for hover */
+
+  --color-secondary: #d1495b;
+  --color-secondary-hover: #a83241; /* Darkened for hover */
+
+  --color-third: #edae49;
+  --color-third-hover: #c48b2e; /* Darkened for hover */
+
+  /* Keep existing slate colors for backgrounds if needed, or map your own */
+  --color-surface: #f8fafc; 
+  --color-text-main: #0f172a;
+  --color-text-muted: #64748b;
+}
+
+/* Reset & Base Styles */
+:root {
+  font-family: Inter, system-ui, Avenir, Helvetica, Arial, sans-serif;
+  line-height: 1.5;
+  font-weight: 400;
+}
+
+body {
+  background-color: var(--color-surface);
+  color: var(--color-text-main);
+  margin: 0;
+  min-height: 100vh;
+}
