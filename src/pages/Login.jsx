@@ -27,7 +27,7 @@ const Login = () => {
         
         {/* 1. IMAGE BACKGROUND LAYER */}
         <div className="absolute inset-0 md:relative md:w-2/5 bg-primary z-0">
-          <div className="absolute inset-0 bg-[url('https://images.unsplash.com/photo-1614028674026-a65e31bfd27c?q=80&w=2000&auto=format&fit=crop')] bg-cover bg-center mix-blend-overlay opacity-50 md:opacity-20"></div>
+          <div className="absolute inset-0 bg-[url('https://images.unsplash.com/photo-1556761175-5973dc0f32e7?auto=format&fit=crop&q=80')] bg-cover bg-center mix-blend-overlay opacity-50 md:opacity-20"></div>
           <div className="absolute inset-0 bg-gradient-to-t from-primary/90 to-primary/40 md:hidden"></div>
 
           {/* INNER CONTENT (Desktop Only) */}
@@ -37,7 +37,7 @@ const Login = () => {
             </div>
             <h2 className="text-3xl font-bold mb-3 tracking-tight">VIP Access Only</h2>
             <p className="text-blue-50 text-sm leading-relaxed opacity-90">
-              Restricted network. Authorized personnel only. 
+              Restricted network. <br />Authorized personnel only. 
             </p>
           </div>
         </div>
