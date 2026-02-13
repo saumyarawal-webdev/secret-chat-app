@@ -80,7 +80,8 @@ export const getMyRooms = async (req, res) => {
     // We sort by 'updatedAt' so the most recent operation is at the top
     const rooms = await ChatRoom.find({
       $or: [
-        { creator: userId }
+        { creator: userId },
+        { partner: userId }
       ]
     })
     .sort({ updatedAt: -1 })

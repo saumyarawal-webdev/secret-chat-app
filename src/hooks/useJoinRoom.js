@@ -7,20 +7,22 @@ export const useJoinRoom = () => {
   const queryClient = useQueryClient();
 
   return useMutation({
-    mutationFn: async (roomId) => {
+    mutationFn: async (code) => {
       const token = localStorage.getItem('token');
-      const { data } = await axios.post('/api/chat/join', { roomId }, {
+      // Ensure we send the code to the backend
+      const { data } = await axios.post('/api/chat/join', { code }, {
         headers: { Authorization: `Bearer ${token}` }
       });
       return data;
     },
     onSuccess: (data) => {
-      queryClient.invalidateQueries(['chats']);
-      // Navigate to the joined room
-      navigate(`/chat/${data._id}`);
-    },
-    onError: (error) => {
-      alert(error.response?.data?.message || "Invalid Room ID");
+      // Invalidate the list so the Dashboard knows a room is now "active"
+      queryClient.invalidateQueries(['myRooms']);
+      
+      // Navigate using the ID returned by the server
+      if (data && data._id) {
+        navigate(`/chat/${data._id}`);
+      }
     }
   });
 };
