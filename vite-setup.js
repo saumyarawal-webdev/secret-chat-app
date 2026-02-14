@@ -21,7 +21,7 @@ export async function setupFrontend(app) {
     app.use(express.static(path.resolve(__dirname, 'dist')))
 
     // SPA Fallback: Matches ANY route and sends index.html
-    app.get("*", (req, res) => {
+    app.get(/.*/, (req, res) => {
       res.sendFile(path.resolve(__dirname, 'dist', 'index.html'))
     })
   }
