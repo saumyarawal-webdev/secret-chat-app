@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { useUser } from '../hooks/useUser';
 import { LogOut, Plus, Users, Shield } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
-
+import { useQueryClient } from '@tanstack/react-query';
 // Logic & Components
 import { useCreateRoom } from '../hooks/useCreateRoom';
 import { useMyRooms } from '../hooks/useMyRooms'; 
@@ -13,7 +13,7 @@ import RoomCard from '../components/RoomCard';
 const Dashboard = () => {
   const { data: user, isLoading, isError } = useUser();
   const navigate = useNavigate();
-
+  const queryClient = useQueryClient();
   // --- LOGIC START ---
   const [showCreate, setShowCreate] = useState(false);
   const [showJoin, setShowJoin] = useState(false);
@@ -24,6 +24,7 @@ const Dashboard = () => {
 
   const handleLogout = () => {
     localStorage.removeItem('token');
+    queryClient.setQueryData(['user'], null);
     navigate('/login');
   };
 
