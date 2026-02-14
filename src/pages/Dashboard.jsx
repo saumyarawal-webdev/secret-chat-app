@@ -113,7 +113,7 @@ const Dashboard = () => {
         {/* Updated Operations Section */}
         <div>
           <h3 className="text-lg font-bold text-slate-800 mb-3 ml-1">Recent Operations</h3>
-          {rooms && rooms.length > 0 ? (
+          {Array.isArray(rooms) && rooms.length > 0 ? (
              <div className="space-y-3">
                {rooms.map((room) => (
                  <RoomCard key={room._id} room={room} />

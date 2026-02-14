@@ -1,4 +1,4 @@
 next task :
 
-chat ui made - working
-socket handshake failed - fix it.
+working as expected!
+convert to pwa

@@ -12,7 +12,7 @@ export const useMyRooms = () => {
       });
       return data; // Should return an array: [ {code, status, ...} ]
     },
-    // refetchInterval: 3000, // Poll every 3 seconds until we set up Sockets!
+    refetchInterval: 3000, // Poll every 3 seconds until we set up Sockets!
     refetchOnMount: true,
   });
 };

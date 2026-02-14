@@ -106,9 +106,11 @@ export const deleteRoom = async (req, res) => {
       return res.status(404).json({ message: 'Room not found.' });
     }
 
-    // Guard: Only the creator can delete the room
-    if (room.creator.toString() !== userId) {
-      return res.status(401).json({ message: 'Unauthorized. Only the creator can delete this room.' });
+    const isCreator = room.creator.toString() === userId.toString();
+    const isPartner = room.partner && room.partner.toString() === userId.toString();
+
+    if (!isCreator && !isPartner) {
+      return res.status(401).json({ message: 'Unauthorized. You are not in this secure channel.' });
     }
 
     await ChatRoom.findByIdAndDelete(roomId);
