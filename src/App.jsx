@@ -1,6 +1,7 @@
 import { Routes, Route } from 'react-router-dom';
 import Login from './pages/Login';
 import Dashboard from './pages/Dashboard';
+import Chat from './pages/Chat';
 import ProtectedRoute from './components/ProtectedRoute';
 function App() {
   return (
@@ -10,7 +11,7 @@ function App() {
         {/* Protected Routes Wrapper */}
         <Route element={<ProtectedRoute />}>
           <Route path="/" element={<Dashboard />} />
-          {/* We will add /chat/:id here later */}
+          <Route path="/chat/:id" element={<Chat />} />
         </Route>
       </Routes>
     </div>

@@ -1,5 +1,4 @@
 next task :
 
-join room frontend
-socket client
-chat ui
+chat ui made - working
+socket handshake failed - fix it.
