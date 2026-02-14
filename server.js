@@ -16,10 +16,10 @@ const PORT = process.env.PORT || 5173
 const httpServer = createServer(app);
 
 // 2. Initialize IO with CORS
-const io = new Server(httpServer);
+// const io = new Server(httpServer);
 
 // 3. Inject IO into our Logic Handler
-initializeSocket(io); 
+// initializeSocket(io); 
 // --------------------
 
 async function startServer() {
