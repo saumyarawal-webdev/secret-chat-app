@@ -33,6 +33,15 @@ async function startServer() {
   // (You can safely edit this part!)
   // Connect to Database
   await connectDB()
+
+  app.use((req, res, next) => {
+    // Only log API requests to keep logs clean
+    if (req.path.startsWith('/api')) {
+      console.log(`🔍 API Request: ${req.method} ${req.path}`);
+    }
+    next();
+  });
+  
   app.use(express.json()) // JSON Parser
   
   // Mount your API routes BEFORE the frontend
