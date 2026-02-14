@@ -1,11 +1,11 @@
 import { io } from 'socket.io-client';
 
-// 1. Point this to your Backend URL
-// If you deploy later, change this to your production domain
-const URL = 'http://localhost:5173'; 
+// ❌ OLD: const URL = 'http://localhost:5000';
+// ✅ NEW: Leave URL undefined. It defaults to window.location.host
 
-// 2. Create the Socket Instance
-// autoConnect: false -> We wait until the user logs in to connect manually
-export const socket = io(URL, {
+export const socket = io({ 
   autoConnect: false,
+  // We use the standard path. Ensure backend uses this too.
+  path: '/socket.io', 
+  transports: ['websocket', 'polling']
 });
