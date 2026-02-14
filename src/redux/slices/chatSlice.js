@@ -1,53 +1,43 @@
 import { createSlice } from '@reduxjs/toolkit';
 
 const initialState = {
-  activeRoom: null,      // The full room object (id, code, creator, etc.)
-  messages: [],          // Array of chat messages
-  isConnected: false,    // Socket connection status
-  isTyping: false,       // Is the other agent typing?
-  loading: false,
-  error: null,
+  activeRoom: null,
+  messages: [],
+  isConnected: false,
+  isTyping: false,
 };
 
 const chatSlice = createSlice({
   name: 'chat',
   initialState,
   reducers: {
-    // Set the room details when we enter
-    setActiveRoom: (state, action) => {
-      state.activeRoom = action.payload;
-    },
-    // Socket connects
     setSocketConnected: (state, action) => {
       state.isConnected = action.payload;
     },
-    // Add a single message (real-time or own send)
     addMessage: (state, action) => {
       state.messages.push(action.payload);
     },
-    // Load initial history (if any)
-    setMessages: (state, action) => {
-      state.messages = action.payload;
+    // 👇 ADD THIS NEW REDUCER
+    markMessageAsRead: (state, action) => {
+      // action.payload should be the message ID
+      const message = state.messages.find(msg => msg.id === action.payload);
+      if (message) {
+        message.read = true;
+      }
     },
-    // Handle typing indicator
     setTypingStatus: (state, action) => {
       state.isTyping = action.payload;
     },
-    // Clear chat on leave
     resetChat: (state) => {
-      state.activeRoom = null;
-      state.messages = [];
-      state.isConnected = false;
-      state.isTyping = false;
+      return initialState;
     }
   },
 });
 
 export const { 
-  setActiveRoom, 
   setSocketConnected, 
   addMessage, 
-  setMessages, 
+  markMessageAsRead, // Export it!
   setTypingStatus,
   resetChat 
 } = chatSlice.actions;
