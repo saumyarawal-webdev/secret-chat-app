@@ -18,7 +18,7 @@ const httpServer = createServer(app);
 // 2. Initialize IO with CORS
 const io = new Server(httpServer, {
   cors: {
-    origin: "http://localhost:5173", // Your React URL
+    origin: "*", // Your React URL
     methods: ["GET", "POST"]
   }
 });
