@@ -1,4 +1,4 @@
-import ChatRoom from './api/models/ChatRoom'; // 1. Import the Model for the Bouncer
+import ChatRoom from './api/models/ChatRoom.js'; // 1. Import the Model for the Bouncer
 
 export const initializeSocket = (io) => {
   io.on('connection', (socket) => {
