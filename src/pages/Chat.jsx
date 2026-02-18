@@ -51,7 +51,6 @@ if (user && user._id) {
         show: true, 
         message: data.message 
       });
-      navigate('/'); // 🚪 KICK THEM OUT -> Redirect to Dashboard
     };
     // --- EVENT HANDLERS ---
 
@@ -184,6 +183,7 @@ if (user && user._id) {
 
   const handleCloseError = () => {
     setErrorModal({ show: false, message: '' });
+     navigate('/'); // 🚪 KICK THEM OUT -> Redirect to Dashboard
   };
   return (
     <div className="flex flex-col h-screen bg-slate-50">
