@@ -34,7 +34,11 @@ const Chat = () => {
       socket.connect();
     }
 
-    socket.emit("join_room", { roomCode: roomId, userId: user._id });
+    // ✅ NEW WAY (Shows ID Card)
+if (user && user._id) {
+  // We send an object with BOTH the Room ID and the User ID
+  socket.emit("join_room", { roomCode: roomId, userId: user._id });
+}
     dispatch(setSocketConnected(true));
 
     // --- EVENT HANDLERS ---
