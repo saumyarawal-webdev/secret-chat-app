@@ -1,4 +1,4 @@
-import Room from './api/models/Room.js'; // 1. Import the Model for the Bouncer
+import Room from './api/models/ChatRoom'; // 1. Import the Model for the Bouncer
 
 export const initializeSocket = (io) => {
   io.on('connection', (socket) => {
