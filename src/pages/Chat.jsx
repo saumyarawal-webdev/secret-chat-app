@@ -34,7 +34,7 @@ const Chat = () => {
       socket.connect();
     }
 
-    socket.emit("join_room", roomId); 
+    socket.emit("join_room", { roomCode: roomId, userId: user._id });
     dispatch(setSocketConnected(true));
 
     // --- EVENT HANDLERS ---
