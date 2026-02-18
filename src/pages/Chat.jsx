@@ -41,6 +41,11 @@ if (user && user._id) {
 }
     dispatch(setSocketConnected(true));
 
+    const handleAuthError = (data) => {
+      console.error("Authentication Error:", data.message);
+      alert(`⛔ ${data.message}`); // Show alert to explain why
+      navigate('/'); // 🚪 KICK THEM OUT -> Redirect to Dashboard
+    };
     // --- EVENT HANDLERS ---
 
     const handleReceiveMessage = (data) => {
@@ -77,7 +82,8 @@ if (user && user._id) {
     const handleUserLeft = () => setPartnerStatus("waiting");
     const handleDisplayTyping = () => dispatch(setTypingStatus(true));
     const handleHideTyping = () => dispatch(setTypingStatus(false));
-
+    
+    socket.on("auth_error", handleAuthError);
     socket.on("receive_message", handleReceiveMessage);
     socket.on("message_read", handleMessageRead);
     socket.on("user_joined", handleUserJoined);

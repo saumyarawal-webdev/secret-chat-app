@@ -58,8 +58,23 @@ export const initializeSocket = (io) => {
 
     // 2. Send Message
     socket.on('send_message', (data, callback) => {
+      // data: { room, message, sender, time, id }
+      
+      // 🛡️ SECURITY CHECK: Is this socket actually IN the room?
+      // If the Bouncer blocked them in 'join_room', socket.rooms will NOT have this room ID.
+      if (!socket.rooms.has(data.room)) {
+        console.log(`⛔ BLOCKED MESSAGE: User ${socket.id} tried to post to ${data.room} without joining.`);
+        
+        // Optional: Tell them they failed
+        if (callback) callback({ status: 'error', message: 'You are not in this room.' });
+        return; 
+      }
+
+      // If they are in the room, proceed:
       socket.to(data.room).emit('receive_message', data);
-      if (callback) callback({ status: 'ok' }); 
+      
+      // Confirmation
+      if (callback) callback({ status: 'ok' });
     });
 
     // 3. Typing Indicators
