@@ -1,4 +1,4 @@
-import Room from './api/models/ChatRoom'; // 1. Import the Model for the Bouncer
+import ChatRoom from './api/models/ChatRoom'; // 1. Import the Model for the Bouncer
 
 export const initializeSocket = (io) => {
   io.on('connection', (socket) => {
@@ -23,7 +23,7 @@ export const initializeSocket = (io) => {
         }
 
         // 2. Check the Database
-        const room = await Room.findById(roomCode);
+        const room = await ChatRoom.findById(roomCode);
         
         // 3. Validation: Does room exist? Is User in the participants list?
         if (!room) {
