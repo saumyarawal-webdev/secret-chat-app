@@ -182,6 +182,9 @@ if (user && user._id) {
     setTimeout(() => socket.emit("stop_typing", roomId), 3000);
   };
 
+  const handleCloseError = () => {
+    setErrorModal({ show: false, message: '' });
+  };
   return (
     <div className="flex flex-col h-screen bg-slate-50">
       
