@@ -12,7 +12,7 @@ import {
 } from '../redux/slices/chatSlice';
 import { useUser } from '../hooks/useUser';
 import { useDeleteRoom } from '../hooks/useDeleteRoom';
-
+import AuthErrorModal from '../components/AuthErrorModal';
 const Chat = () => {
   const { id: roomId } = useParams();
   const navigate = useNavigate();
@@ -24,6 +24,10 @@ const Chat = () => {
   
   const [newMessage, setNewMessage] = useState("");
   const [partnerStatus, setPartnerStatus] = useState("waiting");
+  const [errorModal, setErrorModal] = useState({ 
+    show: false, 
+    message: '' 
+  });
   const messagesEndRef = useRef(null);
 
   // --- 1. SOCKET LOGIC ---
@@ -43,7 +47,10 @@ if (user && user._id) {
 
     const handleAuthError = (data) => {
       console.error("Authentication Error:", data.message);
-      alert(`⛔ ${data.message}`); // Show alert to explain why
+      setErrorModal({ 
+        show: true, 
+        message: data.message 
+      });
       navigate('/'); // 🚪 KICK THEM OUT -> Redirect to Dashboard
     };
     // --- EVENT HANDLERS ---
@@ -92,6 +99,7 @@ if (user && user._id) {
     socket.on("hide_typing", handleHideTyping);
 
     return () => {
+      socket.off("auth_error", handleAuthError);
       socket.off("receive_message", handleReceiveMessage);
       socket.off("message_read", handleMessageRead);
       socket.off("user_joined", handleUserJoined);
@@ -263,6 +271,11 @@ if (user && user._id) {
           </button>
         </form>
       </div>
+      <AuthErrorModal 
+        isOpen={errorModal.show} 
+        message={errorModal.message} 
+        onClose={handleCloseError} 
+      />
     </div>
   );
 };
