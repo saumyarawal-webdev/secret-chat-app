@@ -1,5 +1,6 @@
 import { Routes, Route } from 'react-router-dom';
 import Login from './pages/Login';
+import Signup from './pages/Signup';
 import Dashboard from './pages/Dashboard';
 import Chat from './pages/Chat';
 import ProtectedRoute from './components/ProtectedRoute';
@@ -11,6 +12,7 @@ function App() {
         {/* Public Routes Wrapper */}
         <Route element={<PublicRoute />}>
           <Route path="/login" element={<Login />} />
+          <Route path="/signup" element={<Signup />} />
         </Route>
         {/* Protected Routes Wrapper */}
         <Route element={<ProtectedRoute />}>

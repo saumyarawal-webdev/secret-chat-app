@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { Link } from 'react-router-dom';
 import { MessageSquare, Lock, Mail, Loader2, AlertCircle } from 'lucide-react'; 
 import { useLogin } from '../hooks/useLogin'; // 1. Import the Hook
 
@@ -109,7 +110,14 @@ const Login = () => {
               )}
             </button>
           </form>
-
+        {/* 🔴 PASTE THIS NEW BLOCK HERE */}
+          <div className="mt-6 text-center text-sm font-medium text-gray-500">
+            Not having an account?{' '}
+            <Link to="/signup" className="text-primary hover:text-primary-hover transition-colors">
+              Create one
+            </Link>
+          </div>
+          {/* ----------------------------- */}
         </div>
       </div>
     </div>
